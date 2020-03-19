@@ -10,6 +10,10 @@ app.use(express.json());
 
 app.use(require('./routes'));
 
+app.get('/', (req, res) => {
+  res.sendFile(join(__dirname, './public/index.html'))
+})
+
 //Exercise page
 app.get('/exercise', (req, res) => {
   res.sendFile(join(__dirname, 'public/exercise.html'));
