@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const { join } = require('path');
 
@@ -28,4 +29,4 @@ app.get('/stats', (req, res) => {
 //connects to the server
 require('./config')
   .then(() => app.listen(process.env.PORT || 3000))
-  .catch(e => console.log(e));
+  .catch(e => console.error(e));
