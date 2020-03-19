@@ -1,32 +1,48 @@
 const router = require('express').Router();
+
 const { Workout } = require('../models');
 
-// Get all workouts
+//update workout
+router.put('/workouts/:id', (req, res) => {
+  Workout.findByIdAndUpdate(req.params.id, { $push: { exercises: req.body } })
+    .then(workout => res.json(workout))
+    .catch(e => console.log(e));
+});
+
+// GET all workouts
 router.get('/workouts', (req, res) => {
   Workout.find()
     .then(workouts => res.json(workouts))
-    .catch(e => console.error(e));
+    .catch(e => console.log(e));
 });
 
-// GET workouts in range
+// Get workout by range
 router.get('/workouts/range', (req, res) => {
-  Workout.find()
+  Workout.find(req.body)
     .limit(7)
-    .then(workout => res.json(workout))
-    .catch(e => console.error(e));
-  console.log(req.body);
+    .then(workout => {
+      res.json(workout);
+    })
+    .catch(e => console.log(e));
 });
 
-// Post a workout
+// POST a workout
 router.post('/workouts', (req, res) => {
   Workout.create(req.body)
     .then(workout => res.json(workout))
     .catch(e => console.log(e));
 });
 
-// PUT one exercise in workout
+// PUT a workout
 router.put('/workouts/:id', (req, res) => {
   Workout.update({ id: req.params.id }, req.body)
+    .then(() => res.sendStatus(200))
+    .catch(e => console.log(e));
+});
+
+// DELETE a workout
+router.delete('/workouts', (req, res) => {
+  Workout.findByIdAndRemove(req.params.id)
     .then(() => res.sendStatus(200))
     .catch(e => console.log(e));
 });
